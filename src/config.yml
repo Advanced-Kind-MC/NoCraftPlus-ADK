@@ -1,0 +1,15 @@
+#Material names can be found here:
+#https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+disabled_items:
+  - HOPPER
+  - TNT
+#Use this to disable all recipes
+disable_all: false
+#Whether or not you want the plugin to
+#Tell you on login when there is an update available
+check_for_updates: true
+#Whether or not you want the plugin to send bStats info.
+#Please consider leaving this true!
+enable_metrics: true
+#Do not change
+config_version: 5

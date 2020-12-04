@@ -1,6 +1,6 @@
 package net.corruptmc.nocraftplus.util;
 
-import net.corruptmc.nocraftplus.NoCraftPlus;
+import net.corruptmc.nocraftplus.NoCraftPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -16,10 +16,12 @@ public class UpdateChecker {
 
     private Plugin plugin;
     private int resourceId;
+    private NoCraftPlugin ncp;
 
-    public UpdateChecker(Plugin plugin, int resourceId) {
+    public UpdateChecker(Plugin plugin, int resourceId, NoCraftPlugin ncp) {
         this.plugin = plugin;
         this.resourceId = resourceId;
+        this.ncp = ncp;
     }
 
     public void getVersion(final Consumer<String> consumer) {
@@ -34,8 +36,7 @@ public class UpdateChecker {
         });
     }
 
-    public static void updateConfig() {
-        NoCraftPlus ncp = JavaPlugin.getPlugin(NoCraftPlus.class);
+    public void updateConfig() {
         FileConfiguration config = ncp.getConfig();
         int version = config.getInt("config_version");
         if (version < 3) {
@@ -48,6 +49,10 @@ public class UpdateChecker {
             config.set("disable_all", false);
             config.set("config_version", 4);
             ncp.saveConfig();
+        }
+        if (version == 4){
+            config.set("enable_metrics", true);
+            config.set("config_version", 5);
         }
     }
 }
