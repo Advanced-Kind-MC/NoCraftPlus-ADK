@@ -34,7 +34,14 @@ public class CraftListener implements Listener
                 boolean allDisabled = plugin.isAllDisabled();
                 String type = event.getRecipe().getResult().getType().name();
                 boolean disabledItem = plugin.getFilters().contains(type);
-                if (allDisabled || disabledItem)
+                if (allDisabled)
+                {
+                    if (!player.hasPermission("nocraftplus.bypass." + type.toLowerCase()))
+                    {
+                        event.getInventory().setResult(null);
+                        player.sendMessage(title + Lang.CRAFTING_DISABLED.toString().replaceAll("%item%", type));
+                    }
+                } else if (disabledItem)
                 {
                     List<String> filters = plugin.getFilters();
                     for (String s : filters)

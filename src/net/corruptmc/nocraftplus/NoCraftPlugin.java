@@ -38,7 +38,6 @@ public class NoCraftPlugin extends JavaPlugin
 
         loadLang();
 
-
         checkForUpdates();
 
         loadFilters();
@@ -97,32 +96,28 @@ public class NoCraftPlugin extends JavaPlugin
         handler.register("remove", new CmdRemove(this));
 
         getCommand("nocraftplus").setExecutor(handler);
+        getCommand("nocraftplus").setTabCompleter(new NCPTabCompleter());
     }
 
     public void loadLang()
     {
         File lang = new File(getDataFolder(), "lang.yml");
-        YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(lang);
         if (!lang.exists())
         {
-            log.info("No language file detected. Creating one now");
             try
             {
-                langConfig.save(lang);
+                lang.createNewFile();
             } catch (IOException e)
             {
                 e.printStackTrace();
-                log.info("Could not create language file.");
-                log.info("Disabling plugin.");
-                getServer().getPluginManager().disablePlugin(this);
             }
         }
-        int i = 0;
+
+        YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(lang);
         for (Lang item : Lang.values())
         {
             if (langConfig.getString(item.getPath()) == null)
             {
-                i++;
                 langConfig.set(item.getPath(), item.getDefault());
             }
         }
@@ -130,8 +125,6 @@ public class NoCraftPlugin extends JavaPlugin
         try
         {
             langConfig.save(lang);
-            if (i > 0)
-                log.info("Loaded new language messages.");
         } catch (IOException e)
         {
             log.info("Could not save language file.");
