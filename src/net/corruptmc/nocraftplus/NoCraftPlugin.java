@@ -6,6 +6,7 @@ import net.corruptmc.nocraftplus.listeners.UpdateListener;
 import net.corruptmc.nocraftplus.util.Lang;
 import net.corruptmc.nocraftplus.util.Metrics;
 import net.corruptmc.nocraftplus.util.UpdateChecker;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -102,16 +103,6 @@ public class NoCraftPlugin extends JavaPlugin
     public void loadLang()
     {
         File lang = new File(getDataFolder(), "lang.yml");
-        if (!lang.exists())
-        {
-            try
-            {
-                lang.createNewFile();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
 
         YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(lang);
         for (Lang item : Lang.values())
@@ -172,7 +163,7 @@ public class NoCraftPlugin extends JavaPlugin
         if (allDisabled)
             size = "all";
         else
-            size = Integer.toString(filters.size());
+            size = String.valueOf(filters.size());
 
         metrics.addCustomChart(new Metrics.SimplePie("disabled_items", new Callable<String>()
         {

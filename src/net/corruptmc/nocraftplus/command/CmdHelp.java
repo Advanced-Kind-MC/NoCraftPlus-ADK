@@ -21,7 +21,6 @@ public class CmdHelp implements CommandInterface
         msg("&8Remove item filter: &f/ncp remove <item>", sender);
         msg("&8List item filters: &f/ncp list", sender);
         msg("&8Reload filters: &f/ncp reload", sender);
-        msg("&8Open GUI: &f/ncp gui", sender);
         msg("&e=========================", sender);
         return true;
     }
