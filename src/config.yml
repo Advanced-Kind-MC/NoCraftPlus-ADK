@@ -5,6 +5,8 @@ disabled_items:
   - TNT
 #Use this to disable all recipes
 disable_all: false
+#Send a message when a player attempts to craft a blocked item
+enable_alert: true
 #Whether or not you want the plugin to
 #Tell you on login when there is an update available
 check_for_updates: true
@@ -12,4 +14,4 @@ check_for_updates: true
 #Please consider leaving this true!
 enable_metrics: true
 #Do not change
-config_version: 5
+config_version: 6

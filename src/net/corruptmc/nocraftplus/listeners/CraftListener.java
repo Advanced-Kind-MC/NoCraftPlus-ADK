@@ -11,10 +11,12 @@ import org.bukkit.inventory.InventoryView;
 public class CraftListener implements Listener
 {
     private NoCraftPlugin plugin;
+    private boolean alert;
 
     public CraftListener(NoCraftPlugin plugin)
     {
         this.plugin = plugin;
+        this.alert = plugin.getConfig().getBoolean("enable_alert");
     }
 
     @EventHandler
@@ -38,8 +40,10 @@ public class CraftListener implements Listener
                 if (!player.hasPermission("nocraftplus.bypass." + type.toLowerCase()))
                 {
                     event.getInventory().setResult(null);
-                    player.sendMessage(Lang.TITLE.toString() +
-                            Lang.CRAFTING_DISABLED.toString().replaceAll("%item%", type));
+
+                    if (alert)
+                        player.sendMessage(Lang.TITLE.toString() +
+                                Lang.CRAFTING_DISABLED.toString().replaceAll("%item%", type));
                 }
             }
         }

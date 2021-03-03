@@ -6,7 +6,6 @@ import net.corruptmc.nocraftplus.listeners.UpdateListener;
 import net.corruptmc.nocraftplus.util.Lang;
 import net.corruptmc.nocraftplus.util.Metrics;
 import net.corruptmc.nocraftplus.util.UpdateChecker;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
