@@ -1,7 +1,9 @@
 package net.corruptmc.nocraftplus.listeners;
 
 import net.corruptmc.nocraftplus.NoCraftPlugin;
+import net.corruptmc.nocraftplus.events.BlockedCraftingEvent;
 import net.corruptmc.nocraftplus.util.Lang;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,11 +41,18 @@ public class CraftListener implements Listener
                 //Check whether or not the player is allowed to use the current recipe
                 if (!player.hasPermission("nocraftplus.bypass." + type.toLowerCase()))
                 {
-                    event.getInventory().setResult(null);
+                    BlockedCraftingEvent craftEvent = new BlockedCraftingEvent(event);
 
-                    if (alert)
-                        player.sendMessage(Lang.TITLE.toString() +
-                                Lang.CRAFTING_DISABLED.toString().replaceAll("%item%", type));
+                    Bukkit.getServer().getPluginManager().callEvent(craftEvent);
+
+                    if (!craftEvent.isCancelled())
+                    {
+                        event.getInventory().setResult(null);
+
+                        if (alert)
+                            player.sendMessage(Lang.TITLE.toString() +
+                                    Lang.CRAFTING_DISABLED.toString().replaceAll("%item%", type));
+                    }
                 }
             }
         }

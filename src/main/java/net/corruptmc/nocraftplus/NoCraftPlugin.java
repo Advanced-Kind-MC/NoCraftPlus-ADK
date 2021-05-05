@@ -24,9 +24,13 @@ public class NoCraftPlugin extends JavaPlugin
     private List<String> filters;
     private boolean allDisabled;
 
+    private static NoCraftPlugin plugin;
+
     @Override
     public void onEnable()
     {
+        this.plugin = this;
+
         this.log = getLogger();
 
         File configFile = new File(getDataFolder(), "config.yml");
@@ -51,6 +55,7 @@ public class NoCraftPlugin extends JavaPlugin
     @Override
     public void onDisable()
     {
+        plugin = null;
     }
 
     public void checkForUpdates()
@@ -123,6 +128,27 @@ public class NoCraftPlugin extends JavaPlugin
         }
     }
 
+    private void loadMetrics()
+    {
+        int pluginID = 7720;
+        Metrics metrics = new Metrics(this, pluginID);
+
+        String size;
+        if (allDisabled)
+            size = "all";
+        else
+            size = String.valueOf(filters.size());
+
+        metrics.addCustomChart(new Metrics.SimplePie("disabled_items", new Callable<String>()
+        {
+            @Override
+            public String call()
+            {
+                return size;
+            }
+        }));
+    }
+
     public List<String> getFilters()
     {
         return this.filters;
@@ -153,24 +179,9 @@ public class NoCraftPlugin extends JavaPlugin
         return this.allDisabled;
     }
 
-    private void loadMetrics()
+    //for API
+    public static NoCraftPlugin getNoCraftPlusPlugin()
     {
-        int pluginID = 7720;
-        Metrics metrics = new Metrics(this, pluginID);
-
-        String size;
-        if (allDisabled)
-            size = "all";
-        else
-            size = String.valueOf(filters.size());
-
-        metrics.addCustomChart(new Metrics.SimplePie("disabled_items", new Callable<String>()
-        {
-            @Override
-            public String call()
-            {
-                return size;
-            }
-        }));
+        return plugin;
     }
 }

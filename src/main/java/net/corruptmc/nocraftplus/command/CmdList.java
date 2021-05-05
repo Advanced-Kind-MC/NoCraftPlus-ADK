@@ -9,17 +9,17 @@ import java.util.List;
 public class CmdList implements CommandInterface
 {
     private NoCraftPlugin plugin;
-    private String title;
 
     public CmdList(NoCraftPlugin plugin)
     {
         this.plugin = plugin;
-        this.title = Lang.TITLE.toString();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args)
     {
+        String title = Lang.TITLE.toString();
+
         if (args.length != 1)
         {
             sender.sendMessage(title + Lang.USAGE.toString().replaceAll("%cmd%", "/ncp list"));

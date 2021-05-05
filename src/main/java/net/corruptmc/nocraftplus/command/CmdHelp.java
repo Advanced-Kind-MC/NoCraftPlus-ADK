@@ -1,17 +1,10 @@
 package net.corruptmc.nocraftplus.command;
 
-import net.corruptmc.nocraftplus.util.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class CmdHelp implements CommandInterface
 {
-    String title;
-
-    public CmdHelp()
-    {
-        this.title = Lang.TITLE.toString();
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args)

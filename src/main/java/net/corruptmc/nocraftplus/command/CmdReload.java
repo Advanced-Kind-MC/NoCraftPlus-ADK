@@ -7,17 +7,16 @@ import org.bukkit.command.CommandSender;
 public class CmdReload implements CommandInterface
 {
     private NoCraftPlugin plugin;
-    private String title;
 
     public CmdReload(NoCraftPlugin plugin)
     {
         this.plugin = plugin;
-        this.title = Lang.TITLE.toString();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args)
     {
+        String title = Lang.TITLE.toString();
         if (args.length != 1)
         {
             sender.sendMessage(title + Lang.USAGE.toString().replaceAll("%cmd%", "/ncp reload"));
@@ -25,6 +24,9 @@ public class CmdReload implements CommandInterface
         {
             plugin.reloadConfig();
             plugin.loadFilters();
+            plugin.loadLang();
+            title = Lang.TITLE.toString();
+
             sender.sendMessage(title + Lang.FILTERS_RELOADED.toString());
         }
         return true;

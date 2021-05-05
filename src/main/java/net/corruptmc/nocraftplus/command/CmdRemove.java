@@ -8,17 +8,17 @@ import org.bukkit.command.CommandSender;
 public class CmdRemove implements CommandInterface
 {
     private NoCraftPlugin plugin;
-    private String title;
 
     public CmdRemove(NoCraftPlugin plugin)
     {
         this.plugin = plugin;
-        this.title = Lang.TITLE.toString();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args)
     {
+        String title = Lang.TITLE.toString();
+
         if (args.length != 2)
         {
             sender.sendMessage(title + Lang.USAGE.toString().replaceAll("%cmd%", "/ncp remove <item>"));
