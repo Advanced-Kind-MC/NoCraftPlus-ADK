@@ -39,7 +39,7 @@ public class CraftListener implements Listener
             if (disabledItem || allDisabled)
             {
                 //Check whether or not the player is allowed to use the current recipe
-                if (!player.hasPermission("nocraftplus.bypass." + type.toLowerCase()))
+                if (!player.hasPermission("nocraftplus.bypass." + type.toLowerCase()) && !player.hasPermission("nocraftplus.bypass.*"))
                 {
                     BlockedCraftingEvent craftEvent = new BlockedCraftingEvent(event);
 
