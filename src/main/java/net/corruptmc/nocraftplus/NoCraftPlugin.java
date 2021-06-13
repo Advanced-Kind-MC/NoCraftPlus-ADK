@@ -6,6 +6,7 @@ import net.corruptmc.nocraftplus.listeners.UpdateListener;
 import net.corruptmc.nocraftplus.util.Lang;
 import net.corruptmc.nocraftplus.util.Metrics;
 import net.corruptmc.nocraftplus.util.UpdateChecker;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -19,6 +20,8 @@ import java.util.logging.Logger;
 
 public class NoCraftPlugin extends JavaPlugin
 {
+    //todo blacklist/whitelist mode
+
     private Logger log;
 
     private List<String> filters;
@@ -149,34 +152,44 @@ public class NoCraftPlugin extends JavaPlugin
         }));
     }
 
+    //Get all current crafting list
     public List<String> getFilters()
     {
         return this.filters;
     }
 
-    public void addFilter(String material)
+    //Block an item from crafting
+    public void addFilter(Material material)
     {
         FileConfiguration config = getConfig();
         List<String> temp = config.getStringList("disabled_items");
-        temp.add(material);
+        temp.add(material.toString());
         config.set("disabled_items", temp);
         saveConfig();
-        this.filters.add(material);
+        this.filters.add(material.toString());
     }
 
-    public void removeFilter(String material)
+    //Remove a blocked item
+    public void removeFilter(Material material)
     {
         FileConfiguration config = getConfig();
         List<String> temp = config.getStringList("disabled_items");
-        temp.remove(material);
+        temp.remove(material.toString());
         config.set("disabled_items", temp);
         saveConfig();
-        this.filters.remove(material);
+        this.filters.remove(material.toString());
     }
 
+    //Check if all crafting is blocked
     public boolean isAllDisabled()
     {
         return this.allDisabled;
+    }
+
+    //Check if a material is blocked
+    public boolean isBlocked(Material type)
+    {
+        return this.filters.contains(type.toString());
     }
 
     //for API

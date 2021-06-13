@@ -36,7 +36,7 @@ public class CmdAdd implements CommandInterface
                     sender.sendMessage(title + Lang.FILTER_EXISTS.toString());
                 } else
                 {
-                    plugin.addFilter(mat.name());
+                    plugin.addFilter(mat);
                     sender.sendMessage(title + Lang.FILTER_ADDED.toString().replaceAll("%item%", mat.name()));
                 }
             }

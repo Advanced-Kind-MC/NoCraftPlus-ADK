@@ -34,12 +34,12 @@ public class CmdRemove implements CommandInterface
                 return true;
             }
 
-            if (!plugin.getFilters().contains(mat.name()))
+            if (!plugin.isBlocked(mat))
             {
                 sender.sendMessage(title + Lang.INVALID_FILTER.toString());
             } else
             {
-                plugin.removeFilter(mat.name());
+                plugin.removeFilter(mat);
                 sender.sendMessage(title + Lang.FILTER_REMOVED.toString().replaceAll("%item%", mat.name()));
             }
         }
