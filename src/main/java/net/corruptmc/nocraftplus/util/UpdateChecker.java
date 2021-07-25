@@ -24,6 +24,7 @@ public class UpdateChecker
         this.plugin = plugin;
         this.resourceId = resourceId;
         this.ncp = ncp;
+        this.updateConfig();
     }
 
     public void getVersion(final Consumer<String> consumer)
@@ -52,21 +53,31 @@ public class UpdateChecker
             if (!config.isSet("check_for_updates"))
                 config.set("check_for_updates", true);
             config.set("config_version", 3);
+            version = 3;
         }
         if (version == 3)
         {
             config.set("disable_all", false);
             config.set("config_version", 4);
+            version = 4;
         }
         if (version == 4)
         {
             config.set("enable_metrics", true);
             config.set("config_version", 5);
+            version = 5;
         }
         if (version == 5)
         {
             config.set("enable-alert", true);
             config.set("config_version", 6);
+            version = 6;
+        }
+        if (version == 6)
+        {
+            config.set("blacklist", true);
+            config.set("disable_all", null);
+            version = 7;
         }
         ncp.saveConfig();
     }

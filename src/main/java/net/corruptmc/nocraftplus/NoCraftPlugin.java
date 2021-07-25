@@ -25,7 +25,7 @@ public class NoCraftPlugin extends JavaPlugin
     private Logger log;
 
     private List<String> filters;
-    private boolean allDisabled;
+    private boolean whitelist;
 
     private static NoCraftPlugin plugin;
 
@@ -82,7 +82,7 @@ public class NoCraftPlugin extends JavaPlugin
     {
         FileConfiguration config = getConfig();
         filters = config.getStringList("disabled_items");
-        allDisabled = config.getBoolean("disable_all");
+        this.whitelist = !config.getBoolean("blacklist");
     }
 
     public void registerListeners()
@@ -136,13 +136,9 @@ public class NoCraftPlugin extends JavaPlugin
         int pluginID = 7720;
         Metrics metrics = new Metrics(this, pluginID);
 
-        String size;
-        if (allDisabled)
-            size = "all";
-        else
-            size = String.valueOf(filters.size());
+        String size = String.valueOf(this.filters.size());
 
-        metrics.addCustomChart(new Metrics.SimplePie("disabled_items", new Callable<String>()
+        metrics.addCustomChart(new Metrics.SimplePie("#_of_items", new Callable<String>()
         {
             @Override
             public String call()
@@ -150,6 +146,13 @@ public class NoCraftPlugin extends JavaPlugin
                 return size;
             }
         }));
+    }
+
+    //Get current filter mode
+    //Returns "WHITELIST" or "BLACKLIST"
+    public String getMode()
+    {
+        return this.whitelist ? "WHITELIST" : "BLACKLIST";
     }
 
     //Get all current crafting list
@@ -178,12 +181,6 @@ public class NoCraftPlugin extends JavaPlugin
         config.set("disabled_items", temp);
         saveConfig();
         this.filters.remove(material.toString());
-    }
-
-    //Check if all crafting is blocked
-    public boolean isAllDisabled()
-    {
-        return this.allDisabled;
     }
 
     //Check if a material is blocked

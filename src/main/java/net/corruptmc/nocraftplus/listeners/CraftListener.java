@@ -32,29 +32,38 @@ public class CraftListener implements Listener
 
             String type = event.getRecipe().getResult().getType().name();
 
-            boolean allDisabled = plugin.isAllDisabled();
-            boolean disabledItem = plugin.getFilters().contains(type);
 
-            //Check whether or not the current recipe is disabled
-            if (disabledItem || allDisabled)
-            {
-                //Check whether or not the player is allowed to use the current recipe
-                if (!player.hasPermission("nocraftplus.bypass." + type.toLowerCase()) && !player.hasPermission("nocraftplus.bypass.*"))
+                //Check whether or not the current recipe is disabled
+                if (isDisabled(type))
                 {
-                    BlockedCraftingEvent craftEvent = new BlockedCraftingEvent(event);
-
-                    Bukkit.getServer().getPluginManager().callEvent(craftEvent);
-
-                    if (!craftEvent.isCancelled())
+                    //Check whether or not the player is allowed to use the current recipe
+                    if (!player.hasPermission("nocraftplus.bypass." + type.toLowerCase()) && !player.hasPermission("nocraftplus.bypass.*"))
                     {
-                        event.getInventory().setResult(null);
+                        BlockedCraftingEvent craftEvent = new BlockedCraftingEvent(event);
 
-                        if (alert)
-                            player.sendMessage(Lang.TITLE.toString() +
-                                    Lang.CRAFTING_DISABLED.toString().replaceAll("%item%", type));
+                        Bukkit.getServer().getPluginManager().callEvent(craftEvent);
+
+                        if (!craftEvent.isCancelled())
+                        {
+                            event.getInventory().setResult(null);
+
+                            if (alert)
+                                player.sendMessage(Lang.TITLE.toString() +
+                                        Lang.CRAFTING_DISABLED.toString().replaceAll("%item%", type));
+                        }
                     }
                 }
-            }
         }
     }
+
+    //Check to see if an item is allowed
+    private boolean isDisabled(String item)
+    {
+        boolean isListed = plugin.getFilters().contains(item);
+        boolean whitelist = plugin.getMode().equals("WHITELIST");
+
+        //todo
+        return (!whitelist || !isListed) && (whitelist || isListed);
+    }
+
 }

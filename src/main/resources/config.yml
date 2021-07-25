@@ -4,8 +4,8 @@
 disabled_items:
   - HOPPER
   - TNT
-#Use this to disable all recipes
-disable_all: false
+#Enable blacklist mode (false = whitelist)
+blacklist: true
 #Send a message when a player attempts to craft a blocked item
 enable_alert: true
 #Whether or not you want the plugin to
@@ -15,4 +15,4 @@ check_for_updates: true
 #Please consider leaving this true!
 enable_metrics: true
 #Do not change
-config_version: 6
+config_version: 7
