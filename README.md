@@ -6,3 +6,5 @@ NCP is a lightweight plugin, meaning it won't impact performance of your server 
 Requires Java 16
 
 [Download](https://www.spigotmc.org/resources/nocraftplus.79378/)
+
+Check out the wiki for help with installation and configuration.
