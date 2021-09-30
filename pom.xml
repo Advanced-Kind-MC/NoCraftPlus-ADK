@@ -10,13 +10,8 @@
     <name>NoCraftPlus</name>
 
     <properties>
-<<<<<<< Updated upstream
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-=======
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
->>>>>>> Stashed changes
         <java.version>16</java.version>
     </properties>
 
