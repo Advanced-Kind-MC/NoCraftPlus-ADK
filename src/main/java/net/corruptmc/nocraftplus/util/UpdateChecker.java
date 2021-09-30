@@ -48,6 +48,7 @@ public class UpdateChecker
     {
         FileConfiguration config = ncp.getConfig();
         int version = config.getInt("config_version");
+        int temp = version;
         if (version < 3)
         {
             if (!config.isSet("check_for_updates"))
@@ -80,5 +81,7 @@ public class UpdateChecker
             version = 7;
         }
         ncp.saveConfig();
+        if (version != temp)
+            plugin.getLogger().info("config.yml updated.");
     }
 }

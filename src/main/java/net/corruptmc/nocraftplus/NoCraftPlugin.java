@@ -20,12 +20,10 @@ import java.util.logging.Logger;
 
 public class NoCraftPlugin extends JavaPlugin
 {
-    //todo blacklist/whitelist mode
-
     private Logger log;
 
     private List<String> filters;
-    private boolean whitelist;
+    private boolean blacklist;
 
     private static NoCraftPlugin plugin;
 
@@ -82,7 +80,7 @@ public class NoCraftPlugin extends JavaPlugin
     {
         FileConfiguration config = getConfig();
         filters = config.getStringList("disabled_items");
-        this.whitelist = !config.getBoolean("blacklist");
+        this.blacklist = config.getBoolean("blacklist");
     }
 
     public void registerListeners()
@@ -152,7 +150,7 @@ public class NoCraftPlugin extends JavaPlugin
     //Returns "WHITELIST" or "BLACKLIST"
     public String getMode()
     {
-        return this.whitelist ? "WHITELIST" : "BLACKLIST";
+        return this.blacklist ? "BLACKLIST" : "WHITELIST";
     }
 
     //Get all current crafting list
@@ -186,7 +184,8 @@ public class NoCraftPlugin extends JavaPlugin
     //Check if a material is blocked
     public boolean isBlocked(Material type)
     {
-        return this.filters.contains(type.toString());
+        boolean hasMat = this.filters.contains(type.toString());
+        return this.blacklist && hasMat || !this.blacklist && !hasMat;
     }
 
     //for API
