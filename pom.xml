@@ -12,7 +12,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <java.versaion>16</java.versaion>
+        <java.version>16</java.version>
     </properties>
 
     <repositories>
