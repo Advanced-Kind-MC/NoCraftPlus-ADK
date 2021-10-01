@@ -27,7 +27,7 @@ public class CraftListener implements Listener
     {
         //Check if the current recipe exists
         if (event.getRecipe() != null)
-        {
+        { //recipe does not exist
             InventoryView view = event.getView();
             Player player = (Player) view.getPlayer();
 
@@ -40,12 +40,13 @@ public class CraftListener implements Listener
                     //Check whether or not the player is allowed to use the current recipe
                     if (!player.hasPermission("nocraftplus.bypass." + name.toLowerCase()) && !player.hasPermission("nocraftplus.bypass.*"))
                     {
+                        //Run custom event for API
                         BlockedCraftingEvent craftEvent = new BlockedCraftingEvent(event);
-
                         Bukkit.getServer().getPluginManager().callEvent(craftEvent);
 
+                        //Check if an external plugin cancelled the event
                         if (!craftEvent.isCancelled())
-                        {
+                        { //event was not cancelled
                             event.getInventory().setResult(null);
 
                             if (alert)
