@@ -7,4 +7,4 @@ Requires Java 16
 
 [Download](https://www.spigotmc.org/resources/nocraftplus.79378/)
 
-Check out the [wiki](https://github.com/VerduzcoTristan/NoCraftPlus/wiki) for help seting up.
+Check out the [wiki](https://github.com/VerduzcoTristan/NoCraftPlus/wiki) for help setting up.
