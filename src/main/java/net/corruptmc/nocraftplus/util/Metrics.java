@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import net.corruptmc.nocraftplus.NoCraftPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -717,4 +718,18 @@ public class Metrics {
         }
     }
 
+    public static void loadMetrics(NoCraftPlugin plugin)
+    {
+        int pluginID = 7720;
+        Metrics metrics = new Metrics(plugin, pluginID);
+
+        metrics.addCustomChart(new Metrics.SimplePie("filter_mode", new Callable<String>()
+        {
+            @Override
+            public String call()
+            {
+                return plugin.getMode();
+            }
+        }));
+    }
 }

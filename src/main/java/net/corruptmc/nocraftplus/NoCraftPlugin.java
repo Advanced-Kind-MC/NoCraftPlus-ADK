@@ -2,20 +2,16 @@ package net.corruptmc.nocraftplus;
 
 import net.corruptmc.nocraftplus.command.*;
 import net.corruptmc.nocraftplus.listeners.CraftListener;
-import net.corruptmc.nocraftplus.listeners.UpdateListener;
 import net.corruptmc.nocraftplus.util.Lang;
 import net.corruptmc.nocraftplus.util.Metrics;
 import net.corruptmc.nocraftplus.util.UpdateChecker;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 public class NoCraftPlugin extends JavaPlugin
@@ -30,8 +26,7 @@ public class NoCraftPlugin extends JavaPlugin
     @Override
     public void onEnable()
     {
-        this.plugin = this;
-
+        plugin = this;
         this.log = getLogger();
 
         File configFile = new File(getDataFolder(), "config.yml");
@@ -41,39 +36,20 @@ public class NoCraftPlugin extends JavaPlugin
             saveDefaultConfig();
         }
 
-        loadLang();
-
-        checkForUpdates();
-
+        Lang.loadLang(plugin);
+        UpdateChecker.checkForUpdates(plugin);
         loadFilters();
         registerCommands();
         registerListeners();
 
         if (getConfig().getBoolean("enable_metrics"))
-            loadMetrics();
+            Metrics.loadMetrics(plugin);
     }
 
     @Override
     public void onDisable()
     {
         plugin = null;
-    }
-
-    public void checkForUpdates()
-    {
-        new UpdateChecker(this, 79378, this).getVersion(version ->
-        {
-            if (this.getDescription().getVersion().equalsIgnoreCase(version))
-            {
-                log.info("Up to date!");
-            } else
-            {
-                log.info("Update available.");
-
-                if (getConfig().getBoolean("check_for_updates"))
-                    getServer().getPluginManager().registerEvents(new UpdateListener(), this);
-            }
-        });
     }
 
     public void loadFilters()
@@ -86,65 +62,29 @@ public class NoCraftPlugin extends JavaPlugin
     public void registerListeners()
     {
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new CraftListener(this), this);
+        pm.registerEvents(new CraftListener(plugin), plugin);
     }
 
     public void registerCommands()
     {
         CommandHandler handler = new CommandHandler();
 
-        handler.register("nocraftplus", new CmdBase(this));
+        handler.register("nocraftplus", new CmdBase(plugin));
 
-        handler.register("add", new CmdAdd(this));
+        handler.register("add", new CmdAdd(plugin));
         handler.register("help", new CmdHelp());
-        handler.register("list", new CmdList(this));
-        handler.register("reload", new CmdReload(this));
-        handler.register("remove", new CmdRemove(this));
+        handler.register("list", new CmdList(plugin));
+        handler.register("reload", new CmdReload(plugin));
+        handler.register("remove", new CmdRemove(plugin));
+        handler.register("toggle", new CmdToggle(plugin));
 
         getCommand("nocraftplus").setExecutor(handler);
         getCommand("nocraftplus").setTabCompleter(new NCPTabCompleter());
     }
 
-    public void loadLang()
-    {
-        File lang = new File(getDataFolder(), "lang.yml");
-
-        YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(lang);
-        for (Lang item : Lang.values())
-        {
-            if (langConfig.getString(item.getPath()) == null)
-            {
-                langConfig.set(item.getPath(), item.getDefault());
-            }
-        }
-        Lang.setFile(langConfig);
-        try
-        {
-            langConfig.save(lang);
-        } catch (IOException e)
-        {
-            log.info("Could not save language file.");
-            log.info("Disabling plugin.");
-            getServer().getPluginManager().disablePlugin(this);
-        }
-    }
-
-    private void loadMetrics()
-    {
-        int pluginID = 7720;
-        Metrics metrics = new Metrics(this, pluginID);
-
-        String size = String.valueOf(this.filters.size());
-
-        metrics.addCustomChart(new Metrics.SimplePie("#_of_items", new Callable<String>()
-        {
-            @Override
-            public String call()
-            {
-                return size;
-            }
-        }));
-    }
+    /*
+    API Methods
+     */
 
     //Get current filter mode
     //Returns "WHITELIST" or "BLACKLIST"
@@ -186,6 +126,14 @@ public class NoCraftPlugin extends JavaPlugin
     {
         boolean hasMat = this.filters.contains(type.toString());
         return this.blacklist && hasMat || !this.blacklist && !hasMat;
+    }
+
+    //Toggle blacklist mode
+    public void toggleBlacklist()
+    {
+        this.blacklist = !this.blacklist;
+        getConfig().set("blacklist", this.blacklist);
+        saveConfig();
     }
 
     //for API

@@ -1,7 +1,12 @@
 package net.corruptmc.nocraftplus.util;
 
+import net.corruptmc.nocraftplus.NoCraftPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public enum Lang
 {
@@ -20,6 +25,7 @@ public enum Lang
     NO_FILTERS("no-filters", "&8No filters detected."),
     CURRENT_FILTERS("current-filters", "&8Current filters: &c%filters%"),
     FILTERS_RELOADED("filters-reloaded", "&8Successfully reloaded filters."),
+    BLACKLIST_TOGGLE("blacklist-toggle", "&c%mode% &8mode enabled."),
 
     //Command errors
     FILTER_EXISTS("filter-exists", "&cThat item already has a filter set."),
@@ -62,5 +68,29 @@ public enum Lang
         return this.path;
     }
 
+    public static void loadLang(NoCraftPlugin ncp)
+    {
+        File lang = new File(ncp.getDataFolder(), "lang.yml");
+
+        YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(lang);
+        for (Lang item : Lang.values())
+        {
+            if (langConfig.getString(item.getPath()) == null)
+            {
+                langConfig.set(item.getPath(), item.getDefault());
+            }
+        }
+        Lang.setFile(langConfig);
+        try
+        {
+            langConfig.save(lang);
+        } catch (IOException e)
+        {
+            Logger log = ncp.getLogger();
+            log.info("Could not save language file.");
+            log.info("Disabling plugin.");
+            ncp.getServer().getPluginManager().disablePlugin(ncp);
+        }
+    }
 
 }

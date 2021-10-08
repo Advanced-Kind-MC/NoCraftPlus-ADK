@@ -17,7 +17,6 @@ public class CmdBase implements CommandInterface
     public boolean onCommand(CommandSender sender, String[] args)
     {
         String title = Lang.TITLE.toString();
-
         String message = Lang.PLUGIN_INFO.toString().replaceAll("%ver%", this.version);
         sender.sendMessage(title + message);
         message = Lang.GET_HELP.toString();

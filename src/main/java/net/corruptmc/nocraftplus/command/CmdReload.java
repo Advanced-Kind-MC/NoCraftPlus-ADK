@@ -2,6 +2,7 @@ package net.corruptmc.nocraftplus.command;
 
 import net.corruptmc.nocraftplus.NoCraftPlugin;
 import net.corruptmc.nocraftplus.util.Lang;
+import net.corruptmc.nocraftplus.util.Metrics;
 import org.bukkit.command.CommandSender;
 
 public class CmdReload implements CommandInterface
@@ -16,18 +17,16 @@ public class CmdReload implements CommandInterface
     @Override
     public boolean onCommand(CommandSender sender, String[] args)
     {
-        String title = Lang.TITLE.toString();
         if (args.length != 1)
         {
-            sender.sendMessage(title + Lang.USAGE.toString().replaceAll("%cmd%", "/ncp reload"));
+            sender.sendMessage(Lang.TITLE.toString() + Lang.USAGE.toString().replaceAll("%cmd%", "/ncp reload"));
         } else
         {
             plugin.reloadConfig();
             plugin.loadFilters();
-            plugin.loadLang();
-            title = Lang.TITLE.toString();
+            Lang.loadLang(plugin);
 
-            sender.sendMessage(title + Lang.FILTERS_RELOADED.toString());
+            sender.sendMessage(Lang.TITLE.toString() + Lang.FILTERS_RELOADED.toString());
         }
         return true;
     }

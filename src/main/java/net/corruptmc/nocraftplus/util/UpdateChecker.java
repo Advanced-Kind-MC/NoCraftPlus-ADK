@@ -1,6 +1,7 @@
 package net.corruptmc.nocraftplus.util;
 
 import net.corruptmc.nocraftplus.NoCraftPlugin;
+import net.corruptmc.nocraftplus.listeners.UpdateListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -78,10 +79,27 @@ public class UpdateChecker
         {
             config.set("blacklist", true);
             config.set("disable_all", null);
+            config.set("config_version", 7);
             version = 7;
         }
         ncp.saveConfig();
         if (version != temp)
             plugin.getLogger().info("config.yml updated.");
+    }
+    public static void checkForUpdates(NoCraftPlugin plugin)
+    {
+        new UpdateChecker(plugin, 79378, plugin).getVersion(version ->
+        {
+            if (plugin.getDescription().getVersion().equalsIgnoreCase(version))
+            {
+                plugin.getLogger().info("Up to date!");
+            } else
+            {
+                plugin.getLogger().info("Update available.");
+
+                if (plugin.getConfig().getBoolean("check_for_updates"))
+                    plugin.getServer().getPluginManager().registerEvents(new UpdateListener(), plugin);
+            }
+        });
     }
 }
