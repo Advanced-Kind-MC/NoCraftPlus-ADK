@@ -9,4 +9,4 @@ Requires Java 16
 
 Check out the [wiki](https://github.com/VerduzcoTristan/NoCraftPlus/wiki) for help setting up.
 
-Post issues in the [Issues](https://github.com/VerduzcoTristan/NoCraftPlus/issues) tab.
+Post bugs/problems in the [Issues](https://github.com/VerduzcoTristan/NoCraftPlus/issues) tab.
