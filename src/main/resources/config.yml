@@ -16,5 +16,5 @@ check_for_updates: true
 enable_metrics: true
 #Do not change
 config_version: 7
-allowed_worlds:
+affected_worlds:
   - World1
