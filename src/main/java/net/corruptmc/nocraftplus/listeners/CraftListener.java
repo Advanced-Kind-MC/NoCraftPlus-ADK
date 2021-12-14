@@ -3,8 +3,13 @@ package net.corruptmc.nocraftplus.listeners;
 import net.corruptmc.nocraftplus.NoCraftPlugin;
 import net.corruptmc.nocraftplus.events.BlockedCraftingEvent;
 import net.corruptmc.nocraftplus.util.Lang;
+
+import java.io.File;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,9 +18,11 @@ import org.bukkit.inventory.InventoryView;
 
 public class CraftListener implements Listener
 {
+    
     private NoCraftPlugin plugin;
     private boolean alert;
-
+    File configFile = new File(plugin.getDataFolder(), "config.yml");
+    YamlConfiguration configConfig = YamlConfiguration.loadConfiguration(configFile);
     public CraftListener(NoCraftPlugin plugin)
     {
         this.plugin = plugin;
@@ -33,6 +40,14 @@ public class CraftListener implements Listener
 
             Material material = event.getRecipe().getResult().getType();
             String name = material.name();
+
+            
+            String worldName = player.getWorld().getName();
+            List<String> worlds = (List<String>) configFile.get("Allowed Worlds: ");
+            if(!worlds.contains(worldName)) {
+                return;
+            }
+
 
             //Check whether or not the current recipe is disabled
             if (plugin.isBlocked(material))
