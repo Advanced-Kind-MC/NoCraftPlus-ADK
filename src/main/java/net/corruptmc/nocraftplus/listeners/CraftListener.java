@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,11 +19,9 @@ import org.bukkit.inventory.InventoryView;
 
 public class CraftListener implements Listener
 {
-    
+    private List<String> worlds;
     private NoCraftPlugin plugin;
     private boolean alert;
-    File configFile = new File(plugin.getDataFolder(), "config.yml");
-    YamlConfiguration configConfig = YamlConfiguration.loadConfiguration(configFile);
     public CraftListener(NoCraftPlugin plugin)
     {
         this.plugin = plugin;
@@ -43,7 +42,8 @@ public class CraftListener implements Listener
 
             
             String worldName = player.getWorld().getName();
-            List<String> worlds = (List<String>) configConfig.get("Allowed Worlds: ");
+            FileConfiguration config = plugin.getConfig();
+            worlds = config.getStringList("allowed_worlds");
             if(!worlds.contains(worldName)) {
                 return;
             }
