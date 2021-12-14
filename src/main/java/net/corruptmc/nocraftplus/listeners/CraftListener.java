@@ -43,7 +43,7 @@ public class CraftListener implements Listener
             
             String worldName = player.getWorld().getName();
             FileConfiguration config = plugin.getConfig();
-            worlds = config.getStringList("allowed_worlds");
+            worlds = config.getStringList("affected_worlds");
             if(!worlds.contains(worldName)) {
                 return;
             }
