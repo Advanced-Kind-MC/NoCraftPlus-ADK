@@ -64,9 +64,6 @@ public class CraftListener implements Listener
                     {//event was not cancelled
                         event.getInventory().setResult(null);
 
-                        if (alert)
-                            player.sendMessage(Lang.TITLE.toString() +
-                                    Lang.CRAFTING_DISABLED.toString().replaceAll("%item%", name));
                     }
                 }
             }
